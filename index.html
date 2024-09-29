@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- JW Player script -->
+    <script src="https://ssl.p.jwpcdn.com/player/v/8.22.0/jwplayer.js"></script>
+    <!-- JW Player license key -->
+    <script>jwplayer.key = 'EN7MpaKagehNwodFmcDG3/k/QCMXIo8qyzO5Fi+Bxq0=';</script>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #player {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .jwplayer .jw-progress {
+            background-color: #FF0000;
+        }
+
+        button:hover {
+            background: #FF0000 !important;
+        }
+
+        .jw-icon-forward {
+            background: url('https://www.kindpng.com/picc/b/79-797059_forward-icon-png.png') no-repeat center center;
+            background-size: 100%;
+        }
+
+        /* Hide the reset option in the right-click menu */
+        .jw-rightclick .jw-reset {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="player"></div>
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            var playerInstance = jwplayer("player");
+
+            // Updated list of URLs
+            var videoUrls = [
+                { file: "https://www.tgxlink.workers.dev/dl/66f8d3c0eceae511688a3f2b?&.MP4", label: "URL 1" },
+                { file: "https://linksshortner.xyz/AgADUQ272754?&.MP4", label: "URL 2" },
+                { file: "https://file-to-link-nx-b8f69ee9ae53.herokuapp.com/dl/66f8d3c0f72831b3553ef757?&.MP4", label: "URL 3" },
+                { file: "https://www.tg-x-server1.workers.dev/v2/AgADUQ50788?&.MP4", label: "URL 4" },
+                { file: "https://tg-movies4u.tgmkvofcl.workers.dev/599418?hash=AgADUQ?&.MP4", label: "URL 5" },
+                { file: "https://file-streamx-697cdb6409cc.herokuapp.com/181142?hash=AgADUQ&m=1?hash=undefined?&.MP4", label: "URL 6" },
+                { file: "https://go.springsfern.in/dl/842129?&.MP4", label: "URL 7" }
+            ];
+
+            var currentUrlIndex = 0;
+
+            // Function to switch to the next URL if the current one fails
+            function switchToNextUrl() {
+                currentUrlIndex++;
+                if (currentUrlIndex < videoUrls.length) {
+                    console.log("Switching to: " + videoUrls[currentUrlIndex].label);
+                    playerInstance.load([{ file: videoUrls[currentUrlIndex].file }]);
+                    playerInstance.play();
+                } else {
+                    console.log("All URLs have failed.");
+                }
+            }
+
+            // Set up JW Player with the first URL
+            playerInstance.setup({
+                aspectratio: "16:9",
+                preload: 'auto',  // Preload the video to reduce buffering
+                primary: 'html5',
+                sources: [videoUrls[0]],  // Start with the first URL
+                tracks: [
+                    {
+                        file: "https://raw.githubusercontent.com/pothabattulavinod/Ss/refs/heads/main/Saripodhaa%20Sanivaaram.vtt",
+                        label: "English",
+                        kind: "captions",
+                        default: true
+                    }
+                ],
+                captions: {
+                    backgroundOpacity: 0,
+                    edgeStyle: "raised"
+                },
+                width: '100%',
+                height: '100%',
+                controls: true,
+                displayPlaybackLabel: true,
+                advertising: {
+                    client: "vast",
+                    schedule: [
+                        { offset: "pre", tag: "" }
+                    ]
+                }
+            });
+
+            // Handle player errors and switch to the next available URL
+            playerInstance.on('error', function () {
+                console.log("Error occurred, switching to the next available URL.");
+                switchToNextUrl();
+            });
+
+            // Optional: Handle buffering issues (switch URLs if persistent buffering is detected)
+            playerInstance.on('buffer', function () {
+                console.log("Buffering detected...");
+                // Uncomment the line below if you want to switch URLs on buffering.
+                // switchToNextUrl();
+            });
+
+            // Add custom forward button (optional)
+            playerInstance.on('ready', function () {
+                var lastTimeKey = 'jwplayer-last-time';
+                var lastTime = localStorage.getItem(lastTimeKey);
+                if (lastTime) {
+                    playerInstance.seek(parseFloat(lastTime));
+                }
+
+                playerInstance.addButton(
+                    'https://www.kindpng.com/picc/b/79-797059_forward-icon-png.png',
+                    'Forward 10 seconds',
+                    function () {
+                        playerInstance.seek(playerInstance.getPosition() + 10);
+                    },
+                    'forward10'
+                );
+            });
+
+            playerInstance.on('pause', function () {
+                var lastTimeKey = 'jwplayer-last-time';
+                localStorage.setItem(lastTimeKey, playerInstance.getPosition());
+            });
+
+            playerInstance.on('complete', function () {
+                var lastTimeKey = 'jwplayer-last-time';
+                localStorage.setItem(lastTimeKey, 0);
+            });
+        });
+    </script>
+</body>
+
+</html>
